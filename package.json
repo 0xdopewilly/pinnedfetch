@@ -1,0 +1,19 @@
+{
+  "name": "toolbond",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bonded, hash-pinned MCP tool manifests, adjudicated by GenLayer validators.",
+  "license": "MIT",
+  "scripts": {
+    "lint:contracts": "scripts/glw lint contracts/pinned_fetch.py",
+    "test:contracts": "scripts/glw test",
+    "bundle": "python3 scripts/bundle.py",
+    "bundle:check": "python3 scripts/bundle.py --check"
+  },
+  "devDependencies": {
+    "genlayer": "0.40.0-rc.3"
+  },
+  "dependencies": {
+    "genlayer-js": "2.0.0-rc.1"
+  }
+}
