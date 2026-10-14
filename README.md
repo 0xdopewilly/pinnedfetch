@@ -11,10 +11,11 @@ said at a point in time, verified by validators who each fetched it themselves.
 
 | | |
 |---|---|
-| Contract | [`0x8D4B7B2376069251E05f3aef7C3f1F433c2F040c`](https://explorer-studio-dev.genlayer.com/address/0x8D4B7B2376069251E05f3aef7C3f1F433c2F040c) |
-| Deployed source | `contracts/pinned_fetch.py`, SHA-256 `440bafc7a086d898c71cf1b422cbb0bb6152fe24ae835e1f542129acecadd1a8` |
-| Pinned by consensus | DeepWiki, Cloudflare Docs, gitmcp (MCP Python SDK), Internet Court: 3 validators agreeing each |
-| Drift checks | DeepWiki and Internet Court: `MATCH` |
+| Contract (v2) | [`0xf9f6FD0E66f79471EAd67feA82fff1c3723Ce5f2`](https://explorer-studio-dev.genlayer.com/address/0xf9f6FD0E66f79471EAd67feA82fff1c3723Ce5f2) |
+| Deployed source | `contracts/pinned_fetch.py`, SHA-256 `b5b3daacfc272fbb09d5845e96613b24f6285dc4bf4404070d866a7e2f03ad32` |
+| Pinned by consensus | DeepWiki and Internet Court on v2 (3 validators agreeing each); four servers on v1 |
+| Drift checks | DeepWiki `MATCH` on v2; DeepWiki and Internet Court `MATCH` on v1 |
+| Version 1 | [`0x8D4B7B2376069251E05f3aef7C3f1F433c2F040c`](https://explorer-studio-dev.genlayer.com/address/0x8D4B7B2376069251E05f3aef7C3f1F433c2F040c), before the audit fixes below |
 
 Every transaction hash is in [docs/DEPLOYMENTS.md](docs/DEPLOYMENTS.md).
 
@@ -27,7 +28,9 @@ Every transaction hash is in [docs/DEPLOYMENTS.md](docs/DEPLOYMENTS.md).
 | `get_pin(url)` | view | Latest pin: root, per-tool hashes, protocol, pinner, last drift check |
 | `get_pin_version(url, version)` | view | One version in full, including the canonical text of every tool |
 | `get_last_check(url)` | view | Latest drift check, including the verified text of changed tools |
-| `verify_tool(url, name, hash)` | view | `true` when `hash` is the pinned hash of tool `name` in the latest pin |
+| `verify_tool_at(url, version, name, hash)` | view | `true` when `hash` is tool `name` in pin `version`: use it for the version you approved |
+| `verify_tool(url, name, hash)` | view | the same against the latest pin (anyone can pin a newer version) |
+| `get_last_drift(url)` | view | the latest check that found a change, kept even when later checks fail |
 | `list_pins(offset, limit)`, `get_stats()` | view | Registry listing and counters |
 
 Views return JSON strings. Off-chain clients read them with genlayer-js `readContract`; other contracts call
@@ -48,8 +51,18 @@ validators accept only the same classified failure. What gets stored is exactly 
 |---|---|---|
 | `MATCH` | the live manifest has the pinned root | their own observation is identical |
 | `DIFFERS` | the manifest changed | their own observation is identical, so the stored changed tools are verified content, not the leader's word |
-| `UNSTABLE` | the server returned two different manifests in a row | they also see `UNSTABLE` or `DIFFERS` |
+| `UNSTABLE` | the server returned two different manifests in a row | they see `UNSTABLE` themselves |
 | `UNREACHABLE` | the server could not be read | accepted from any leader: it changes no pin and never counts as a pass |
+
+## Version 2
+
+An independent audit of the ToolBond codebase found issues that also touched this primitive. v2 fixes them:
+
+- TBCM-1 drops only a tool's own top-level `_meta`; a nested `_meta` key is data and changes the hash.
+- Validators accept `UNSTABLE` only when they observe it themselves.
+- `verify_tool_at` checks a specific version, and `get_last_drift` keeps the last real change.
+- SSE lines split only on CR, LF and CRLF; unpaired surrogates are a classified error.
+- URL hosts reject `#`, `?`, backslashes, IP literals and private suffixes.
 
 ## Built on gl_mcp
 

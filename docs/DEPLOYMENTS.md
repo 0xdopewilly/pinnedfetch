@@ -1,5 +1,21 @@
 # PinnedFetch deployments
 
+## Version 2 (live): Studio Next, chain 61997
+
+| Contract | Address | Deploy transaction | Source SHA-256 |
+|---|---|---|---|
+| PinnedFetch | [`0xf9f6FD0E66f79471EAd67feA82fff1c3723Ce5f2`](https://explorer-studio-dev.genlayer.com/address/0xf9f6FD0E66f79471EAd67feA82fff1c3723Ce5f2) | `0x62773b43fd9af3387373c78f20b31690b15d19a605d3e18fb440fb7717f37429` | `b5b3daacfc272fbb09d5845e96613b24f6285dc4bf4404070d866a7e2f03ad32` |
+
+### PinnedFetch v2 live calls
+
+| Call | Server | Transaction | Result |
+|---|---|---|---|
+| `pin` | `https://mcp.deepwiki.com/mcp` | `0x68bc4c037a4ff49e08f3d2a4293850392254376f95c103117977309a2a8d99b4` | pinned, 3 agree |
+| `pin` | `https://mcp.internetcourt.org/mcp` | `0x498b1a87f828fd0dffa9e30feda180b9725d4af8f3b7c9af468117dcda609cb5` | pinned, 3 agree |
+| `check` | `https://mcp.deepwiki.com/mcp` | `0xb56abbd4c5e73ada353847569bcf17bfcde278216498a121df031753f8017a69` | drift `MATCH`, 3 agree |
+
+# Version 1 (history)
+
 ## Studio Next (chain 61997)
 
 Explorer: https://explorer-studio-dev.genlayer.com
