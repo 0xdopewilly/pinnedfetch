@@ -1,8 +1,8 @@
 {
-  "name": "toolbond",
+  "name": "pinnedfetch",
   "version": "0.1.0",
   "private": true,
-  "description": "Bonded, hash-pinned MCP tool manifests, adjudicated by GenLayer validators.",
+  "description": "Consensus-pinned MCP tool manifests with drift detection, a GenLayer Intelligent Contract.",
   "license": "MIT",
   "scripts": {
     "lint:contracts": "scripts/glw lint contracts/pinned_fetch.py",
