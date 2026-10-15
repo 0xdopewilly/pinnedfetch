@@ -17,7 +17,9 @@ said at a point in time, verified by validators who each fetched it themselves.
 | Drift checks | DeepWiki `MATCH` on v2; DeepWiki and Internet Court `MATCH` on v1 |
 | Version 1 | [`0x8D4B7B2376069251E05f3aef7C3f1F433c2F040c`](https://explorer-studio-dev.genlayer.com/address/0x8D4B7B2376069251E05f3aef7C3f1F433c2F040c), before the audit fixes below |
 
-Every transaction hash is in [docs/DEPLOYMENTS.md](docs/DEPLOYMENTS.md).
+Every transaction hash is in [docs/DEPLOYMENTS.md](docs/DEPLOYMENTS.md). [docs/evidence/](docs/evidence/README.md)
+decodes each one from the chain, matches the code stored in each deploy transaction to a commit, and
+reads the pins back from the contract.
 
 ## Interface
 
@@ -79,7 +81,7 @@ Needs [uv](https://docs.astral.sh/uv/) and Node 20+.
 
 ```bash
 ./scripts/setup.sh                                        # Python 3.12 venv, GenLayer test tools, CLI
-GENVM_VERSION=v0.6.0-rc5 .venv/bin/python -m pytest -q    # 37 tests: direct-mode contract, gl_mcp, vectors
+GENVM_VERSION=v0.6.0-rc5 .venv/bin/python -m pytest -q    # 42 tests: direct-mode contract, gl_mcp, vectors
 python3 scripts/bundle.py --check                         # generated contract is up to date
 scripts/glw deploy contracts/pinned_fetch.py              # deploy to Studio Next (keystore in .env.local)
 ```
@@ -97,6 +99,7 @@ vectors for other implementations to check against.
 | `lib/gl_mcp.py` | MCP client and TBCM-1 hashing |
 | `docs/TBCM-1.md`, `docs/gl_mcp.md` | canonical form spec, client guide |
 | `tests/` | direct-mode tests, fixtures captured from real servers, TBCM-1 vectors |
+| `docs/evidence/` | chain-decoded transactions and contract readbacks (`scripts/tx_table.py`, `scripts/readback.py`) |
 
 ## Origin
 

@@ -1,5 +1,8 @@
 # PinnedFetch deployments
 
+Every hash below is decoded from the chain in [evidence/transactions.md](evidence/transactions.md);
+how to check each one is in [evidence/README.md](evidence/README.md).
+
 ## Version 2 (live): Studio Next, chain 61997
 
 | Contract | Address | Deploy transaction | Source SHA-256 |
